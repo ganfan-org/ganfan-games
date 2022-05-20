@@ -7,28 +7,22 @@ ADD package-lock.json /ganfan-web/package-lock.json
 WORKDIR /ganfan-web
 RUN npm install
 
-# 设置变量
-ARG OSS_ACCESSKEY_ID
-ARG OSS_ACCESSKEY_SECRET
-
 RUN echo "[Credentials]" >> ~/.ossutilconfig && \
 echo "language=EN" >> ~/.ossutilconfig && \
-echo "accessKeySecret=${OSS_ACCESSKEY_SECRET}" >> ~/.ossutilconfig   && \
-echo "endpoint=https://oss-cn-beijing.aliyuncs.com" >> ~/.ossutilconfig && \
-echo "accessKeyID=${OSS_ACCESSKEY_ID}" >> ~/.ossutilconfig
+echo "accessKeyID=REMOVED_ACCESS_KEY_ID" >> ~/.ossutilconfig && \
+echo "accessKeySecret=REMOVED_ACCESS_KEY_SECRET" >> ~/.ossutilconfig && \
+echo "endpoint=https://oss-cn-beijing.aliyuncs.com" >> ~/.ossutilconfig
 
-RUN cat ~/.ossutilconfig
+#RUN cat ~/.ossutilconfig
 
 # 项目目录
 ADD . /ganfan-web
-WORKDIR /ganfan-web
+# WORKDIR /ganfan-web
 
 # 上传OSS的构建
-RUN HOST=https://ganfan-tech.oss-cn-beijing.aliyuncs.com/ \
-PUBLIC_URL="https://ganfan-tech.oss-cn-beijing.aliyuncs.com/web/game/main/" \
+RUN PUBLIC_URL="https://ganfan-tech.oss-cn-beijing.aliyuncs.com/web/game/main" \
 npm run build:prod
 
-RUN ossutil64
 RUN ossutil64 cp -r dist oss://ganfan-tech/web/game/main/ --force
 RUN ossutil64 cp dist/index.html oss://ganfan-tech/web-html/game/main/index.html --force
 
