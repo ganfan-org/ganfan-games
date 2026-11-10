@@ -4,74 +4,11 @@ const variable = require('./webpack-utils/variable');
 const resolveConfig = require('./webpack-utils/resolve');
 const plugins = require('./webpack-utils/plugins');
 const { SRC_PATH, DIST_PATH, IS_DEV, IS_PRO, getCDNPath } = variable;
-const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 const lessModuleRegex = /\.module\.less$/;
-const postcssNormalize = require('postcss-normalize');
-const paths = require('./paths');
-
-// common function to get style loaders
-const getStyleLoaders = (cssOptions, preProcessor) => {
-  const loaders = [
-    IS_DEV && require.resolve('style-loader'),
-    IS_PRO && {
-      loader: MiniCssExtractPlugin.loader,
-      // css is located in `static/css`, use '../../' to locate index.html folder
-      // in production `paths.publicUrlOrPath` can be a relative path
-      options: paths.publicUrlOrPath.startsWith('.')
-        ? { publicPath: '../../' }
-        : {},
-    },
-    {
-      loader: require.resolve('css-loader'),
-      options: cssOptions,
-    },
-    {
-      // Options for PostCSS as we reference these options twice
-      // Adds vendor prefixing based on your specified browser support in
-      // package.json
-      loader: require.resolve('postcss-loader'),
-      options: {
-        // Necessary for external CSS imports to work
-        // https://github.com/facebook/create-react-app/issues/2677
-        ident: 'postcss',
-        plugins: () => [
-          require('postcss-flexbugs-fixes'),
-          require('postcss-preset-env')({
-            autoprefixer: {
-              flexbox: 'no-2009',
-            },
-            stage: 3,
-          }),
-          // Adds PostCSS Normalize as the reset css with default options,
-          // so that it honors browserslist config in package.json
-          // which in turn let's users customize the target behavior as per their needs.
-          postcssNormalize(),
-        ],
-        sourceMap: IS_PRO ? shouldUseSourceMap : IS_DEV,
-      },
-    },
-  ].filter(Boolean);
-  if (preProcessor) {
-    loaders.push(
-      {
-        loader: require.resolve('resolve-url-loader'),
-        options: {
-          sourceMap: IS_PRO ? shouldUseSourceMap : IS_DEV,
-          root: paths.appSrc,
-        },
-      },
-      {
-        loader: require.resolve(preProcessor),
-        options: {
-          sourceMap: true,
-        },
-      }
-    );
-  }
-  return loaders;
-};
+const postcssFlexbugsFixes = require('postcss-flexbugs-fixes');
+const postcssPresetEnv = require('postcss-preset-env');
 
 const config = {
   entry: {
@@ -130,27 +67,18 @@ const config = {
             },
           },
           {
-            // Options for PostCSS as we reference these options twice
-            // Adds vendor prefixing based on your specified browser support in
-            // package.json
+            // 为 package.json 中 browserslist 声明的目标浏览器添加厂商前缀
             loader: require.resolve('postcss-loader'),
             options: {
-              // Necessary for external CSS imports to work
-              // https://github.com/facebook/create-react-app/issues/2677
               postcssOptions: {
-                // ident: 'postcss',
-                plugins: () => [
-                  require('postcss-flexbugs-fixes'),
-                  require('postcss-preset-env')({
+                plugins: [
+                  postcssFlexbugsFixes,
+                  postcssPresetEnv({
                     autoprefixer: {
                       flexbox: 'no-2009',
                     },
                     stage: 3,
                   }),
-                  // Adds PostCSS Normalize as the reset css with default options,
-                  // so that it honors browserslist config in package.json
-                  // which in turn let's users customize the target behavior as per their needs.
-                  postcssNormalize(),
                 ],
               },
               sourceMap: IS_PRO ? shouldUseSourceMap : IS_DEV,
@@ -165,19 +93,21 @@ const config = {
           },
         ],
       },
-      // {
-      //   test: sassModuleRegex,
-      //   use: getStyleLoaders(
-      //     {
-      //       importLoaders: 3,
-      //       sourceMap: IS_DEV,
-      //       modules: {
-      //         getLocalIdent: getCSSModuleLocalIdent,
-      //       },
-      //     },
-      //     'sass-loader'
-      //   ),
-      // },
+      {
+        // antd 按需加载后，其组件样式位于 node_modules，需要单独的处理规则
+        test: /\.css$/i,
+        include: [/node_modules[\\/]antd/],
+        use: [
+          IS_DEV ? 'style-loader' : MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: false,
+              sourceMap: !IS_PRO,
+            },
+          },
+        ],
+      },
       {
         test: /\.(png|jpg|gif|jpeg|webp|svg)$/,
         type: 'asset/resource',

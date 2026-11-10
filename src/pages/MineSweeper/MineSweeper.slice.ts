@@ -575,7 +575,7 @@ const slice = createSlice({
             } else if (maybeMineCount === 1 || maybeCount - maybeMineCount === 1) {
               // 遇到3选1时，判断是否存在2选1的情况
               // 如果其中时2选1,则另外一个肯定不是雷
-              
+
               const closeItems = aroundItems.filter((item) => item.item.status === MineItemStatus.close);
               const closeItemsIndexes = closeItems.map((item) => item.index);
               // console.log(`1111 clickIndex${clickIndex} maybeCount${maybeCount} maybeMineCount${maybeMineCount} closeItemsIndexes ${closeItemsIndexes}`);
@@ -592,7 +592,7 @@ const slice = createSlice({
                 if (!indexes) {
                   // console.log('2222', clickIndex, closeItemsIndexes, closeItems[j].index, indexes_arr);
                   continue;
-                };
+                }
 
                 // 这两个是一对儿
                 // 另外的index就是空的

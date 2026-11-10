@@ -30,6 +30,15 @@ module.exports = function (api) {
   ];
   const plugins = [
     [
+      // antd 按需加载：只引入实际用到的组件及其样式，避免打包全量 antd.css
+      'import',
+      {
+        libraryName: 'antd',
+        libraryDirectory: 'es',
+        style: 'css',
+      },
+    ],
+    [
       '@babel/plugin-proposal-decorators',
       {
         legacy: true,

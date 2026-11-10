@@ -76,7 +76,7 @@ function getPlugins() {
       React: "react"
     }),
     new CnameWebpackPlugin({
-      domain: 'game.ganfan.tech',
+      domain: 'game.ganfan.org',
     }),
   ];
 }

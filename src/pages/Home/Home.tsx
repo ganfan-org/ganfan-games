@@ -1,268 +1,62 @@
-import { Option } from '@hqoss/monads';
-import { getArticles, getFeed, getTags } from '../../services/conduit';
-import { store } from '../../state/store';
-import { useStore, useStoreWithInitializer } from '../../state/storeHooks';
-import { FeedFilters } from '../../types/article';
-import { ArticlesViewer } from '../../components/ArticlesViewer/ArticlesViewer';
-import { changePage, loadArticles, startLoadingArticles } from '../../components/ArticlesViewer/ArticlesViewer.slice';
-import { ContainerPage } from '../../components/ContainerPage/ContainerPage';
-// import { changeTab, loadTags, startLoadingTags } from './Home.slice';
-import { Button, Input, Layout, Menu, MenuProps, Tag } from 'antd';
-import React, { Fragment } from 'react';
-import Icon, { UserOutlined, LaptopOutlined, NotificationOutlined, PlayCircleOutlined } from '@ant-design/icons';
-import { ArticlePreview } from '../../components/ArticlePreview/ArticlePreview';
-const { Header, Footer, Sider, Content } = Layout;
-// import { loadTasks, startLoadingTasks, TaskViewerState } from './TaskList.slice';
-import { MultipleTasks } from '../../types/task';
-import { List, Avatar, Space } from 'antd';
-import { MessageOutlined, LikeOutlined, StarOutlined, PauseCircleOutlined } from '@ant-design/icons';
-import { Typography } from 'antd';
-import { Card } from 'antd';
-const { Meta } = Card;
-const { Title, Text } = Typography;
-const items1: MenuProps['items'] = ['1', '2', '3'].map((key) => ({
-  key,
-  label: `nav ${key}`,
-}));
+import React from 'react';
+import { Layout, Typography } from 'antd';
+import { RightOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+import './home.less';
 
-const data = [
+const { Header, Content } = Layout;
+const { Text } = Typography;
+
+const games = [
   {
-    title:
-      'Racing car sprays burning fuel into crowd. Racing car sprays burning fuel into crowd. Racing car sprays burning fuel into crowd',
-    description: 'sprays burning fuel into crowd',
+    path: '/mine-sweeper',
+    name: '扫雷',
+    description: '经典 Windows 扫雷 · 16×30 · 99 颗雷',
   },
-  {
-    title: 'Japanese princess to wed commoner.',
-    description:
-      'Japanese princess to wed commoner, Japanese princess to wed commoner, Japanese princess to wed commoner',
-  },
-  { title: 'Australian walks 100km after outback crash.', description: 'walks 100km after outback crash' },
-  { title: 'Man charged over missing wedding girl.', description: 'charged over missing wedding girl' },
-  { title: 'Man charged over missing wedding girl.', description: 'charged over missing wedding girl' },
-  { title: 'Man charged over missing wedding girl.', description: 'charged over missing wedding girl' },
-  { title: 'Man charged over missing wedding girl.', description: 'charged over missing wedding girl' },
-  { title: 'Man charged over missing wedding girl.', description: 'charged over missing wedding girl' },
-  { title: 'Man charged over missing wedding girl.', description: 'charged over missing wedding girl' },
 ];
-const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map((icon, index) => {
-  const key = String(index + 1);
 
-  return {
-    key: `sub${key}`,
-    icon: React.createElement(icon),
-    label: `subnav ${key}`,
-
-    children: new Array(4).fill(null).map((_, j) => {
-      const subKey = index * 4 + j + 1;
-      return {
-        key: subKey,
-        label: `option${subKey}`,
-      };
-    }),
-  };
-});
+function MiniBoard() {
+  return (
+    <div className='mini-board'>
+      <span className='cell cell-open' />
+      <span className='cell' />
+      <span className='cell' />
+      <span className='cell' />
+      <span className='cell cell-flag' />
+      <span className='cell' />
+      <span className='cell' />
+      <span className='cell' />
+      <span className='cell' />
+    </div>
+  );
+}
 
 export function Home() {
-  const { tags, selectedTab } = useStoreWithInitializer(({ home }) => home, load);
-  const { articles, articlesCount, currentPage } = useStore(({ articleViewer }) => articleViewer);
-
   return (
-    <Layout
-      style={{
-        height: '100vh',
-      }}
-    >
-      <Header
-        style={{
-          padding: '0 20px',
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-        <Text
-          style={{
-            color: 'white',
-            fontSize: '32px',
-          }}
-        >
-          GanFan.Game
-        </Text>
+    <Layout className='home-page' style={{ height: '100vh' }}>
+      <Header className='home-header' style={{ display: 'flex', alignItems: 'center', padding: '0 20px' }}>
+        <Text className='brand'>GanFan.Game</Text>
       </Header>
-      <Layout>
-        {/* <Sider
-          width='30vw'
-          theme='light'
-          style={{
-            color: 'red',
-            overflow: 'auto',
-          }}
-        >
-          
-        </Sider> */}
-        <Content style={{ overflow: 'auto' }}>
-          <Card
-            cover={<img alt='example' src='https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png' />}
-            size='small'
-            style={{ width: 300 }}
-          >
-            <Meta
-              avatar={<Avatar src='https://joeschmoe.io/api/v1/random' />}
-              title={<a href='/mine-sweeper'>扫雷</a>}
-              description=""
-            />
-          </Card>
-        </Content>
-      </Layout>
+      <Content className='home-content'>
+        <div className='home-container'>
+          <div className='home-section-title'>全部游戏</div>
+          <div className='game-grid'>
+            {games.map(({ path, name, description }) => (
+              <Link key={path} to={path} className='game-card'>
+                <div className='game-icon'>
+                  <MiniBoard />
+                </div>
+                <div className='game-info'>
+                  <div className='game-name'>{name}</div>
+                  <div className='game-desc'>{description}</div>
+                </div>
+                <RightOutlined className='game-arrow' />
+              </Link>
+            ))}
+            <div className='game-card-coming'>更多游戏，敬请期待</div>
+          </div>
+        </div>
+      </Content>
     </Layout>
   );
-
-  return (
-    <div className='home-page'>
-      {renderBanner()}
-      <ContainerPage>
-        <div className='col-md-9'>
-          <ArticlesViewer
-            toggleClassName='feed-toggle'
-            selectedTab={selectedTab}
-            tabs={buildTabsNames(selectedTab)}
-            onPageChange={onPageChange}
-            onTabChange={onTabChange}
-          />
-        </div>
-
-        <div className='col-md-3'>
-          <HomeSidebar tags={tags} />
-        </div>
-      </ContainerPage>
-    </div>
-  );
-}
-
-// function TaskList({ tasks }: { tasks: TaskViewerState['tasks'] }) {
-//   console.log(2222, tasks);
-//   return tasks.match({
-//     none: () => (
-//       <div className='article-preview' key={1}>
-//         Loading tasks...
-//       </div>
-//     ),
-//     some: (tasks) => {
-//       console.log(333, tasks);
-//       return <Fragment>
-//         {tasks.length === 0 && (
-//           <div className='article-preview' key={1}>
-//             No tasks are here... yet.
-//           </div>
-//         )}
-//         {tasks.map(({ task, isSubmitting }, index) => (
-//           <TaskListItem item={task} />
-
-//           // <ArticlePreview
-//           //   key={article.slug}
-//           //   article={article}
-//           //   isSubmitting={isSubmitting}
-//           //   onFavoriteToggle={isSubmitting ? undefined : onFavoriteToggle(index, article)}
-//           // />
-//         ))}
-//       </Fragment>
-//     },
-//   });
-// }
-
-async function load() {
-  // store.dispatch(startLoadingArticles());
-  // store.dispatch(startLoadingTasks());
-  // store.dispatch(startLoadingTags());
-  // if (store.getState().app.user.isSome()) {
-  //   store.dispatch(changeTab('Your Feed'));
-  // }
-  // const multipleArticles = await getFeedOrGlobalArticles();
-  // console.log(multipleArticles);
-  // store.dispatch(loadArticles(multipleArticles));
-  // const multipleTasks = await getTasks();
-  // const multipleTasks: MultipleTasks = {
-  //   tasks: [
-  //     {
-  //       slug: '1212',
-  //       title: 'string',
-  //       description: '',
-  //       tagList: [],
-  //       createdAt: new Date(),
-  //       updatedAt: new Date(),
-  //     },
-  //   ],
-  //   count: 1,
-  // };
-  // store.dispatch(loadTasks(multipleTasks));
-  // const tagsResult = await getTags();
-  // store.dispatch(loadTags(tagsResult.tags));
-}
-
-function renderBanner() {
-  return (
-    <div className='banner'>
-      <div className='container'>
-        <h1 className='logo-font'>conduit</h1>
-        <p>A place to share your knowledge.</p>
-      </div>
-    </div>
-  );
-}
-
-function buildTabsNames(selectedTab: string) {
-  const { user } = store.getState().app;
-
-  return Array.from(new Set([...(user.isSome() ? ['Your Feed'] : []), 'Global Feed', selectedTab]));
-}
-
-async function onPageChange(index: number) {
-  store.dispatch(changePage(index));
-
-  const multipleArticles = await getFeedOrGlobalArticles({ offset: (index - 1) * 10 });
-  store.dispatch(loadArticles(multipleArticles));
-}
-
-async function onTabChange(tab: string) {
-  // store.dispatch(changeTab(tab));
-  store.dispatch(startLoadingArticles());
-
-  const multipleArticles = await getFeedOrGlobalArticles();
-  store.dispatch(loadArticles(multipleArticles));
-}
-
-async function getFeedOrGlobalArticles(filters: FeedFilters = {}) {
-  const { selectedTab } = store.getState().home;
-  const finalFilters = {
-    ...filters,
-    tag: selectedTab.slice(2),
-  };
-
-  return await (selectedTab === 'Your Feed' ? getFeed : getArticles)(
-    !selectedTab.startsWith('#') ? filters : finalFilters
-  );
-}
-
-function HomeSidebar({ tags }: { tags: Option<string[]> }) {
-  return (
-    <div className='sidebar'>
-      <p>Popular Tags</p>
-
-      {tags.match({
-        none: () => <span>Loading tags...</span>,
-        some: (tags) => (
-          <div className='tag-list'>
-            {' '}
-            {tags.map((tag) => (
-              <a key={tag} href='#' className='tag-pill tag-default' onClick={() => onTabChange(`# ${tag}`)}>
-                {tag}
-              </a>
-            ))}{' '}
-          </div>
-        ),
-      })}
-    </div>
-  );
-}
-function onFavoriteToggle(index: any, article: any): (() => void) | undefined {
-  throw new Error('Function not implemented.');
 }

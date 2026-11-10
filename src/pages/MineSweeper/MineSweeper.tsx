@@ -72,8 +72,9 @@ export function MineSweeperGame() {
       >
         <Text
           style={{
-            color: 'white',
-            fontSize: '32px',
+            color: 'rgba(255, 255, 255, 0.92)',
+            fontSize: '16px',
+            fontWeight: 600,
           }}
         >
           GanFan.Game
@@ -81,8 +82,8 @@ export function MineSweeperGame() {
         <Divider type='vertical' />
         <Text
           style={{
-            color: 'white',
-            fontSize: '18px',
+            color: 'rgba(255, 255, 255, 0.75)',
+            fontSize: '14px',
           }}
         >
           扫雷
