@@ -1,0 +1,209 @@
+.home-header {
+  background: #1f1f1f;
+}
+.home-header .brand {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+}
+.home-content {
+  background: #f5f5f5;
+  overflow: auto;
+}
+.home-container {
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+.home-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.45);
+  margin-bottom: 16px;
+}
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-gap: 16px;
+  gap: 16px;
+}
+.game-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.game-card:hover {
+  border-color: rgba(0, 0, 0, 0.14);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.game-card:hover .game-arrow {
+  color: rgba(0, 0, 0, 0.45);
+}
+.game-icon {
+  flex-shrink: 0;
+}
+.mini-board {
+  display: grid;
+  grid-template-columns: repeat(3, 14px);
+  grid-template-rows: repeat(3, 14px);
+  grid-gap: 2px;
+  gap: 2px;
+  padding: 4px;
+  border-radius: 6px;
+  background: #bdbdbd;
+  box-shadow: inset 2px 2px 0 #7b7b7b, inset -2px -2px 0 #fefefe;
+}
+.mini-board .cell {
+  background: #bdbdbd;
+  box-shadow: inset 1px 1px 0 #fefefe, inset -1px -1px 0 #7b7b7b;
+}
+.mini-board .cell-open {
+  background: #d5d5d5;
+  box-shadow: none;
+}
+.mini-board .cell-flag {
+  position: relative;
+}
+.mini-board .cell-flag::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 3px;
+  width: 0;
+  height: 0;
+  border-top: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-left: 5px solid #d4380d;
+}
+.game-info {
+  flex: 1 1;
+  min-width: 0;
+}
+.game-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.88);
+  line-height: 1.4;
+}
+.game-desc {
+  margin-top: 2px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+  line-height: 1.5;
+}
+.game-arrow {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.25);
+  transition: color 0.15s ease;
+}
+.game-card-coming {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  border: 1px dashed rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.page-content {
+  background-color: #bebebe;
+}
+.page-content .game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+}
+.page-content .game-container .wrapper {
+  box-sizing: content-box;
+  width: 900px;
+  padding: 3px;
+  box-shadow: inset 3px 3px 0px #7b7b7b, inset -3px -3px 0px #fefefe;
+}
+.page-content .game-container .mine-sweeper-controller {
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  font-size: 20px;
+}
+.page-content .game-container .mine-sweeper-controller > * {
+  flex: 1 1;
+}
+.page-content .game-container .mine-sweeper-controller > :last-child {
+  display: flex;
+  justify-content: end;
+}
+.page-content .game-container .mine-sweeper-controller .start-btn {
+  display: flex;
+  justify-content: center;
+}
+.page-content .game-container .mine-sweeper-controller .start-btn button {
+  background-color: transparent;
+  border: none;
+  line-height: 1;
+  font-size: 30px;
+}
+.page-content .game-container .mine-sweeper-body {
+  width: 900px;
+}
+.page-content .game-container .mine-sweeper-body .mine-item {
+  width: 30px;
+  height: 30px;
+  align-content: center;
+  text-align: center;
+}
+.page-content .game-container .mine-sweeper-body .mine-item.mine-item-open {
+  background-image: url(/assets/images/e3096c432c0bc1ec0278.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.page-content .game-container .mine-sweeper-body .mine-item.mine-item-close {
+  background-image: url(/assets/images/258d853f7e083bfa9295.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.page-content .game-container .mine-sweeper-body .mine-item.is-mine {
+  color: red;
+}
+.page-content .game-container .mine-sweeper-body .mine-item span {
+  line-height: 30px;
+  margin: 0;
+  color: blue;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: default;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.page-content .game-container .mine-sweeper-body .mine-item.flag-error {
+  position: relative;
+}
+.page-content .game-container .mine-sweeper-body .mine-item.flag-error::before,
+.page-content .game-container .mine-sweeper-body .mine-item.flag-error::after {
+  content: '';
+  position: absolute;
+  background-color: black;
+  left: 15px;
+  width: 2px;
+  height: 30px;
+}
+.page-content .game-container .mine-sweeper-body .mine-item.flag-error::before {
+  transform: rotate(45deg);
+}
+.page-content .game-container .mine-sweeper-body .mine-item.flag-error::after {
+  transform: rotate(-45deg);
+}
+
