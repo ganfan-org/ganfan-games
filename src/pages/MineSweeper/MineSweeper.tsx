@@ -149,3 +149,5 @@ export function MineSweeperGame() {
     </Layout>
   );
 }
+
+export default MineSweeperGame;

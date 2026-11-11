@@ -127,3 +127,5 @@ export function NotTetris2() {
     </Layout>
   );
 }
+
+export default NotTetris2;
