@@ -14,7 +14,7 @@ const colors = {
   8: 'RGBA(172, 9, 13, 1.00)',
 };
 
-export function MineItemComponent({ mine, x, y }: { mine: MineItem; x: number; y: number }) {
+export function MineItemComponent({ mine }: { mine: MineItem; x: number; y: number }) {
   const { gameStatus } = useStore(({ mineSweeper }) => mineSweeper);
 
   /**
@@ -104,7 +104,6 @@ export function MineItemComponent({ mine, x, y }: { mine: MineItem; x: number; y
     <div
       className={classes.join(' ')}
       onMouseUp={(e) => {
-        console.log('click', x, y, e);
         store.dispatch(handleMouseEvent({ clickIndex: mine.index, button: e.button }));
       }}
     >
