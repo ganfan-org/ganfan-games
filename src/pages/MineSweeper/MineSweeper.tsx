@@ -1,18 +1,13 @@
 import React from 'react';
-import { login } from '../../services/conduit';
 import { dispatchOnCall, store } from '../../state/store';
 import { useStoreWithInitializer } from '../../state/storeHooks';
-import { loadUserIntoApp } from '../../types/user';
-import { MineItem, MineItemStatus, MineSweeperStatus } from '../../types/mine-sweeper';
-import { GenericForm } from '../../components/GenericForm/GenericForm';
+import { MineItemStatus, MineSweeperStatus } from '../../types/mine-sweeper';
 import { initGame, autoSweepMine, autoSweepMineDoing } from './MineSweeper.slice';
-import { ContainerPage } from '../../components/ContainerPage/ContainerPage';
-
 import { MineItemComponent } from './MineItem';
 import './mine-sweeper.less';
-import { Button, Input, Layout, Typography, Menu, MenuProps, Tag, Divider } from 'antd';
-const { Header, Footer, Sider, Content } = Layout;
-const { Title, Text } = Typography;
+import { Button, Layout, Typography, Divider } from 'antd';
+const { Header, Content } = Layout;
+const { Text } = Typography;
 
 export function MineSweeperGame() {
   const { mines_matrix, gameStatus, start_time, mines_actual } = useStoreWithInitializer(

@@ -1,5 +1,4 @@
-import { createSlice, PayloadAction, current } from '@reduxjs/toolkit';
-import { GenericErrors } from '../../types/error';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MineItem, MineSweeperStatus, MineItemStatus, ClickButtonType } from '../../types/mine-sweeper';
 import { chunk, shuffle, intersection, findIndex, difference, isEqual } from 'lodash';
 import { store } from '../../state/store';

@@ -1,9 +1,7 @@
-import { Item } from 'rc-menu';
 import { store } from '../../state/store';
-import { useStoreWithInitializer, useStore } from '../../state/storeHooks';
+import { useStore } from '../../state/storeHooks';
 import { MineItem, MineItemStatus, MineSweeperStatus } from '../../types/mine-sweeper';
 import { handleMouseEvent } from './MineSweeper.slice';
-import { Tooltip } from 'antd';
 
 const colors = {
   1: 'RGBA(66, 80, 190, 1.00)',
