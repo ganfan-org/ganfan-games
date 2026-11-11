@@ -53,10 +53,10 @@ const getAroundItemsFromMatrix = (
   withSelf = false
 ): AroundItem[] => {
   /**
-   * 知道索引，然后就知道在第几行，第几列
+   * Given the index we know the row and column
    * x = Math.floor(i /30)
    * y = i % 30
-   * 周围的8个位置分别是：
+   * The 8 neighbors are:
    * (x - 1, y - 1)
    * (x - 1, y)
    * (x - 1, y + 1)
@@ -66,8 +66,8 @@ const getAroundItemsFromMatrix = (
    * (x + 1, y)
    * (x + 1, y + 1)
    *
-   * 四个角的只有3个位置，
-   * 其他边上的非角位置有5个位置
+   * Corner cells have 3 neighbors;
+   * Other edge (non-corner) cells have 5
    */
   let results: AroundItem[] = [];
   if ((x === 0 && y === 0) || (x === 0 && y === 29) || (x === 15 && y === 0) || (x === 15 && y === 29)) {
@@ -131,7 +131,7 @@ const getAroundItemsFromMatrix = (
       ];
     }
   } else {
-    // 遍历周围8个位置
+    // Walk the 8 neighbors
     results = [
       { x: -1, y: -1, item: mines[x - 1][y - 1] },
       { x: -1, y: 0, item: mines[x - 1][y] },
@@ -167,7 +167,7 @@ const getAroundItemsFromArray = (
     };
   });
 };
-// 判断是否在一个位置的周围
+// Whether two indexes are adjacent
 const judgeIsAround = (currentIndex: number, anotherIndex: number): boolean => {
   const x1 = Math.floor(currentIndex / 30);
   const y1 = currentIndex % 30;
@@ -179,7 +179,7 @@ const judgeIsAround = (currentIndex: number, anotherIndex: number): boolean => {
   return true;
 };
 
-// 打开周围区域
+// Open surrounding area
 const openAroundItems = (mineArr: MineItem[], index: number) => {
   if (mineArr[index].around_mine_count === 0) {
     const aroundItems = getAroundItemsFromArray(mineArr, index);
@@ -222,19 +222,19 @@ const slice = createSlice({
     },
     startGame: (state: MineSweeperGameState, action: PayloadAction<{ clickIndex: number }>) => {
       const clickIndex = action.payload.clickIndex;
-      // 打乱顺序
+      // Shuffle
       const len = state.mines_actual.length;
       state.mines_actual = shuffle(state.mines_actual);
 
-      // 如果点击处是雷，需要更换一下位置，
-      // 为了优化用户体验，点击处及周围都不能为雷
+      // If the first click lands on a mine, swap it away.
+      // For better UX the first click and its neighbors must be safe.
 
       const aroundItemsWithSelf = getAroundItemsFromArray(state.mines_actual, clickIndex, true);
 
       const aroundItemsIsMine = aroundItemsWithSelf.filter((item) => item.item.is_mine);
 
       let switchIndex = Math.floor(len / 3);
-      // console.log('周围有雷的：');
+      // console.log("mines around:");
       // aroundItemsIsMine.forEach((item) => {
       //   console.log(item);
       // });
@@ -251,8 +251,8 @@ const slice = createSlice({
           //   judgeIsAround(clickIndex, switchIndex)
           // );
           if (state.mines_actual[switchIndex].is_mine === 0 && !judgeIsAround(clickIndex, switchIndex)) {
-            // 找到第一个不是雷的位置，交换
-            // console.log('交换位置', item.index, switchIndex);
+            // Swap with the first non-mine position outside the clicked area
+            // console.log("swap", item.index, switchIndex);
             [state.mines_actual[switchIndex], state.mines_actual[item.index]] = [
               state.mines_actual[item.index],
               state.mines_actual[switchIndex],
@@ -262,16 +262,16 @@ const slice = createSlice({
         }
       });
 
-      // 排矩阵
+      // Rebuild the matrix
       state.mines_matrix = chunk(state.mines_actual, 30);
 
-      // 遍历所有区域
+      // Iterate all cells
       for (let i = 0; i < len; i++) {
-        // 确定索引
+        // Assign index
         const item = state.mines_actual[i];
         item.index = i;
 
-        // 计算每一个区域周围雷的数量
+        // Compute the surrounding mine count for each cell
         const x = Math.floor(i / 30);
         const y = i % 30;
 
@@ -288,21 +288,21 @@ const slice = createSlice({
       const clickIndex = action.payload.clickIndex;
       const clickItem = state.mines_actual[clickIndex];
       if (clickItem.status !== MineItemStatus.close) {
-        // 如果当前状态为打开或者插旗子都返回
+        // Skip when already open or flagged
         return;
       }
       if (clickItem.is_mine === 1) {
         clickItem.isTippingPoint = true;
         slice.caseReducers.gameFail(state, action);
       }
-      // 左击
+      // Left click
       clickItem.status = MineItemStatus.open;
       openAroundItems(state.mines_actual, clickIndex);
 
       state.mines_actual = [...state.mines_actual];
       state.mines_matrix = chunk(state.mines_actual, 30);
 
-      // 每次点击都要遍历， 如果所有不是雷的区域都是open了，说明就赢了
+      // After each click check whether every non-mine cell is open
       const allOpen = state.mines_actual.every((item) => {
         if (item.is_mine === 0 && item.status === MineItemStatus.open) return true;
         if (item.is_mine === 1 && item.status !== MineItemStatus.open) return true;
@@ -311,7 +311,7 @@ const slice = createSlice({
         slice.caseReducers.gameSuccess(state);
       }
     },
-    // 打开多个
+    // Open multiple cells
     openMulti: (state: MineSweeperGameState, action: PayloadAction<{ clickIndexes: Array<number> }>) => {
       const clickIndexes = action.payload.clickIndexes;
       for (let i = 0; i < clickIndexes.length; i++) {
@@ -319,7 +319,7 @@ const slice = createSlice({
 
         const clickItem = state.mines_actual[clickIndex];
 
-        // 如果当前状态为打开或者插旗子都返回
+        // Skip when already open or flagged
         if (clickItem.status !== MineItemStatus.close) continue;
 
         if (clickItem.is_mine === 1) {
@@ -328,7 +328,7 @@ const slice = createSlice({
           return;
         }
 
-        // 左击
+        // Left click
         clickItem.status = MineItemStatus.open;
         openAroundItems(state.mines_actual, clickIndex);
       }
@@ -336,7 +336,7 @@ const slice = createSlice({
       state.mines_actual = [...state.mines_actual];
       state.mines_matrix = chunk(state.mines_actual, 30);
 
-      // 每次点击都要遍历， 如果所有不是雷的区域都是open了，说明就赢了
+      // After each click check whether every non-mine cell is open
       const allOpen = state.mines_actual.every((item) => {
         if (item.is_mine === 0 && item.status === MineItemStatus.open) return true;
         if (item.is_mine === 1 && item.status !== MineItemStatus.open) return true;
@@ -350,9 +350,9 @@ const slice = createSlice({
       for (let i = 0; i < clickIndexes.length; i++) {
         const clickIndex = clickIndexes[i];
         const clickItem = state.mines_actual[clickIndex];
-        // 如果当前状态为打开或者插旗子都返回
+        // Skip when already open or flagged
         if (clickItem.status !== MineItemStatus.close) continue;
-        // 插旗子
+        // Place flag
         clickItem.status = MineItemStatus.flag;
       }
 
@@ -360,7 +360,7 @@ const slice = createSlice({
       state.mines_matrix = chunk(state.mines_actual, 30);
     },
     clickRight: (state: MineSweeperGameState, action: PayloadAction<{ clickIndex: number }>) => {
-      // 插旗子或取消插旗子
+      // Toggle flag on/off
       // console.log(action);
       const clickIndex = action.payload.clickIndex;
       const clickItem = state.mines_actual[clickIndex];
@@ -370,7 +370,7 @@ const slice = createSlice({
       } else if (clickItem.status === MineItemStatus.flag) {
         clickItem.status = MineItemStatus.close;
       } else if (clickItem.status === MineItemStatus.open) {
-        // 打开的状态下，右击相当于触发中键点击
+        // Right-click on an open cell behaves like a middle click
         slice.caseReducers.clickMiddle(state, action);
       }
 
@@ -378,8 +378,8 @@ const slice = createSlice({
       state.mines_matrix = chunk(state.mines_actual, 30);
     },
     clickMiddle: (state: MineSweeperGameState, action: PayloadAction<{ clickIndex: number }>) => {
-      // 判断数字跟周围的旗子数是否匹配
-      // 如果匹配，将周围非旗子的位置打开
+      // Check whether surrounding flag count matches the cell number
+      // If matched, open the unflagged neighbors
       const clickIndex = action.payload.clickIndex;
       const clickItem = state.mines_actual[clickIndex];
       if (clickItem.status !== MineItemStatus.open) return;
@@ -388,10 +388,10 @@ const slice = createSlice({
       const aroundItems = getAroundItemsFromArray(state.mines_actual, clickIndex);
       const flagCount = aroundItems.filter((item) => item.item.status === MineItemStatus.flag).length;
       if (flagCount !== clickItem.around_mine_count) {
-        // TODO 最好能闪一下，给个提示
+        // TODO flash the cell to give the user a hint
         return;
       }
-      // 打开周围没有标记旗子的位置
+      // Open unflagged neighbors
       const aroundItemsClose = aroundItems.filter((item) => item.item.status === MineItemStatus.close);
       for (let i = 0; i < aroundItemsClose.length; i++) {
         slice.caseReducers.clickLeft(state, {
@@ -412,10 +412,10 @@ const slice = createSlice({
       }
       if (gameStatus === MineSweeperStatus.init) {
         if (button === 0) {
-          // 左击开始比赛startGame
+          // Left click starts the game
           slice.caseReducers.startGame(state, action);
         }
-        // 其他不处理
+        // Other buttons are ignored
         return;
       }
       if (button === ClickButtonType.left) {
@@ -426,24 +426,24 @@ const slice = createSlice({
         slice.caseReducers.clickRight(state, action);
       }
 
-      // 点击
+      // Click
     },
 
     /**
-     * 自动扫雷
-     * 先初始化游戏，然后点击屏幕中心位置，然后开始扫雷
+     * Auto sweep
+     * Reset the game, click the center cell, then start sweeping
      */
     autoSweepMine: (state: MineSweeperGameState) => {
       state = createInitialState();
 
       setTimeout(() => {
-        // 开局
+        // Opening move
         store.dispatch(handleMouseEvent({ clickIndex: 30 * 7 + 15, button: ClickButtonType.left }));
 
         setTimeout(() => {
           /**
-           * 开始遍历，插旗子
-           * 一步一步进行
+           * Iterate and place flags
+           * Step by step
            */
           store.dispatch(autoSweepMineDoing());
         }, timeout);
@@ -453,19 +453,19 @@ const slice = createSlice({
     },
 
     autoSweepMineDoing: (state: MineSweeperGameState) => {
-      // 如果游戏已经结束，直接返回
+      // Bail out if the game has already ended
       if (state.gameStatus !== MineSweeperStatus.doing) return;
 
-      // 自动扫雷，目前是一轮一轮的遍历
-      // 本轮是否进行了处理，每轮只处理一次，如果处理过，就进行下一轮遍历
+      // Auto-sweep, currently round-by-round
+      // Whether any processing happened this round; one action per round then continue
       let isProcessing = false;
-      let isPreProcessing = false; // 预处理是进行推理的第一步，并没有打开或标记某个位置
+      let isPreProcessing = false; // Preprocessing is the first inference step; no cell is opened or flagged yet
 
       for (let clickIndex = 0; clickIndex < 30 * 16; clickIndex++) {
         const clickItem = state.mines_actual[clickIndex];
         if (clickItem.resolved || clickItem.status !== MineItemStatus.open || clickItem.around_mine_count === 0) {
-          // 我们是根据打开的数字进行计算、推理
-          // 所以如果当前状态为关闭或者插旗子都不处理，只处理打开的
+          // We infer from revealed numbers
+          // Only revealed cells are processed; closed or flagged cells are skipped
           continue;
         }
         const aroundCount = clickItem.around_count;
@@ -490,10 +490,10 @@ const slice = createSlice({
         }
 
         if (aroundFlagCount === aroundMineCount) {
-          // 旗子数 === 雷数
+          // flag count equals mine count
           if (aroundOpenCount < aroundCount - aroundMineCount) {
-            // 如果 还有未打开的，打开数 < 总数 - 雷数(旗子数)
-            // 中间按键，打开
+            // Some cells still closed: opened < total - mines (flagged)
+            // Middle-click to open
             isProcessing = true;
             setTimeout(() => {
               store.dispatch(handleMouseEvent({ clickIndex: clickIndex, button: ClickButtonType.middle }));
@@ -502,13 +502,13 @@ const slice = createSlice({
               }, timeout);
             }, timeout);
           } else {
-            // 都打开了，处理完成，不处理
+            // Everything open, nothing to do
             clickItem.resolved = true;
           }
         } else if (aroundFlagCount < aroundMineCount) {
-          // 旗子数 < 雷数
+          // flag count < mine count
           if (aroundOpenCount === aroundCount - aroundMineCount) {
-            // 打开数量 == 总数 - 雷数 说明都打开了，但有些没插旗子，就给未打开的插上旗子
+            // opened == total - mines: remaining closed cells are mines, flag them
             aroundItems.forEach((item) => {
               if (item.item.status === MineItemStatus.close) {
                 item.item.status = MineItemStatus.flag;
@@ -519,21 +519,21 @@ const slice = createSlice({
               store.dispatch(autoSweepMineDoing());
             }, timeout);
           } else {
-            // 否则打开数量 < 总数 - 雷数。就要进行推断了
+            // Otherwise opened < total - mines: need inference
 
             // console.log(current(clickItem));
 
-            // m选n
-            // 周围未打开、未插旗的数量
+            // m choose n
+            // Neighbors still closed and unflagged
             const maybeCount = aroundCloseCount;
-            // 周围未标记的雷数
+            // Surrounding unflagged mine count
             const maybeMineCount = aroundMineCount - aroundFlagCount;
 
             /**
-             * 第一种情况
-             * flag + close > 雷数
-             * close数量为2，雷数 - flag数量为1
-             * 为2选1的情况
+             * Case 1
+             * flag + close > mine count
+             * close count is 2, mine count - flag count is 1
+             * A 2-of-1 situation
              */
             if (maybeCount === 2 && maybeMineCount === 1) {
               const indexes = aroundItems
@@ -554,8 +554,8 @@ const slice = createSlice({
               });
               // console.log(state.group_2_1.entries());
             } else if (maybeMineCount === 1 || maybeCount - maybeMineCount === 1) {
-              // 遇到3选1时，判断是否存在2选1的情况
-              // 如果其中时2选1,则另外一个肯定不是雷
+              // For 3-of-1, check if a 2-of-1 subset exists
+              // If a pair is 2-of-1, the third cell is safe
 
               const closeItems = aroundItems.filter((item) => item.item.status === MineItemStatus.close);
               const closeItemsIndexes = closeItems.map((item) => item.index);
@@ -567,7 +567,7 @@ const slice = createSlice({
                 if (indexes_arr === undefined) continue;
 
                 const indexes = indexes_arr.find((indexes) => {
-                  // indexes所有的元素都包含在closeItemsIndexes中
+                  // Every element of indexes is contained in closeItemsIndexes
                   return difference(indexes, closeItemsIndexes).length === 0;
                 });
                 if (!indexes) {
@@ -575,8 +575,8 @@ const slice = createSlice({
                   continue;
                 }
 
-                // 这两个是一对儿
-                // 另外的index就是空的
+                // These two are a pair
+                // The other index is empty
                 const otherIndexes = difference(closeItemsIndexes, indexes);
                 isProcessing = true;
 
@@ -604,14 +604,14 @@ const slice = createSlice({
         }
       }
       if (!isProcessing && isPreProcessing) {
-        // 如果本轮没有进行，但是有预处理，则再触发一下自动扫雷
+        // If nothing processed but we have preprocessing, trigger another pass
         setTimeout(() => {
           store.dispatch(autoSweepMineDoing());
         }, timeout);
       }
 
       if (!isProcessing && !isPreProcessing) {
-        // 本轮既未处理也未预处理，表示当前算法无法继续推进，等待用户介入
+        // Neither processed nor preprocessed this round; algorithm is stuck, waiting for user
       }
 
       state.mines_actual = [...state.mines_actual];

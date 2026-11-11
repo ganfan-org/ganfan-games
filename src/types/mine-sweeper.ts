@@ -6,40 +6,40 @@ export enum MineSweeperStatus {
 }
 
 export enum MineItemStatus {
-  // 遮蔽
+  // Covered
   close,
-  // 打开
+  // Open
   open,
-  // 插旗子
+  // Flagged
   flag,
-  // 问号
+  // Question mark
 }
 
 export enum ClickButtonType {
-  // 左键
+  // Left button
   left = 0,
-  // 中键
+  // Middle button
   middle = 1,
-  // 右键
+  // Right button
   right = 2,
 }
 export interface MineItem {
-  // 雷的编号，初始位置
+  // Original index of the mine
   id: number;
-  // 开局后的位置
+  // Index after the game starts
   index: number;
 
-  // 此处是否是雷
+  // Whether this cell is a mine
   is_mine: 0 | 1;
-  // 引爆点
+  // Detonation point
   isTippingPoint?: boolean;
-  // 当前状态
+  // Current state
   status: MineItemStatus;
-  // 周围雷的数量
+  // Surrounding mine count
   around_mine_count: number;
-  // 周围位置总数
+  // Total neighbors
   around_count: number;
 
-  // 处理完成，周围非雷位置均打开
+  // Processed: all surrounding non-mine cells are open
   resolved?: boolean;
 }

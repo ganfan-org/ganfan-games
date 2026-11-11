@@ -10,14 +10,14 @@ const { Text } = Typography;
 const games = [
   {
     path: '/mine-sweeper',
-    name: '扫雷',
-    description: '经典 Windows 扫雷 · 16×30 · 99 颗雷',
+    name: 'Minesweeper',
+    description: 'Classic Windows Minesweeper · 16×30 · 99 mines',
     icon: 'mine',
   },
   {
     path: '/nottetris2',
     name: 'Not Tetris 2',
-    description: '物理俄罗斯方块 · 真实堆叠 + 切割',
+    description: 'Physics Tetris · real stacking + line clear',
     icon: 'tetris',
   },
 ];
@@ -57,7 +57,7 @@ export function Home() {
       </Header>
       <Content className='home-content'>
         <div className='home-container'>
-          <div className='home-section-title'>全部游戏</div>
+          <div className='home-section-title'>All Games</div>
           <div className='game-grid'>
             {games.map(({ path, name, description, icon }) => (
               <Link key={path} to={path} className='game-card'>
@@ -69,7 +69,7 @@ export function Home() {
                 <RightOutlined className='game-arrow' />
               </Link>
             ))}
-            <div className='game-card-coming'>更多游戏，敬请期待</div>
+            <div className='game-card-coming'>More games coming soon</div>
           </div>
         </div>
       </Content>

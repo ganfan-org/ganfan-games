@@ -18,15 +18,15 @@ export function MineItemComponent({ mine }: { mine: MineItem; x: number; y: numb
   const { gameStatus } = useStore(({ mineSweeper }) => mineSweeper);
 
   /**
-   * 有两种效果，打开或关闭
+   * Two visual states: open or closed
    *
    *
-   * 当游戏结束时，均为打开态
-   * 进行中时，每个雷有自己的状态，open为打开态，close或flag时为关闭态
+   * All cells appear open when the game ends
+   * During play each cell has its own state: open is shown; close or flag renders closed
    *
-   * 展示效果
-   * 尺寸是一样的，
-   * 边框效果
+   * Rendering
+   * Cells share the same size,
+   * Border styling
    */
 
   let isOpen = false;
@@ -55,12 +55,12 @@ export function MineItemComponent({ mine }: { mine: MineItem; x: number; y: numb
         text = '';
       }
     } else {
-      // close 啥也不显示
+      // close: nothing rendered
       text = '';
     }
   } else if (gameStatus === MineSweeperStatus.success) {
-    // 所有的雷都没打开，
-    // 所有非雷都打开了
+    // No mine has been opened,
+    // All non-mine cells are open
     if (mine.status === MineItemStatus.flag) {
       text = '🚩';
     } else if (mine.is_mine) {

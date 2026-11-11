@@ -16,23 +16,11 @@ export function MineSweeperGame() {
   );
 
   /**
-   * 99个雷
-   *
-   * 16 * 30 16行 30列
-   *
-   * 游戏状态：初始态、进行中、成功、失败
-   *
-   * item
-   * 雷区：是雷、不是雷
-   * 数字：0，1，2，3，4，5，6，7，8
-   * 状态：打开，遮蔽，插旗子
-   *
-   * 第一次点击时，布雷，点击处肯定不是雷
-   *
-   *
-   * 状态
+   * Board: 99 mines on a 16-row × 30-column grid.
+   * Game states: init → doing → success | fail.
+   * Cell states: covered / open / flagged.
+   * First click never lands on a mine.
    */
-  //
 
   let btnText = '😊';
   if (gameStatus === MineSweeperStatus.success) {
@@ -43,13 +31,13 @@ export function MineSweeperGame() {
 
   let timeText = '';
   if (start_time !== null) {
-    timeText = '用时: ';
+    timeText = 'Time: ';
     timeText += Math.floor((new Date().getTime() - start_time.getTime()) / 1000);
   }
 
   let flagText = '';
   const flagCount = mines_actual.filter((item) => item.status === MineItemStatus.flag).length;
-  flagText = `旗数/雷数: ${flagCount}/99`;
+  flagText = `Flags/Mines: ${flagCount}/99`;
 
   return (
     <Layout
@@ -81,7 +69,7 @@ export function MineSweeperGame() {
             fontSize: '14px',
           }}
         >
-          扫雷
+          Minesweeper
         </Text>
       </Header>
       <Content className='page-content'>
@@ -124,14 +112,6 @@ export function MineSweeperGame() {
             </div>
           </div>
           <div>
-            {/* <Button
-              onClick={() => {
-                store.dispatch(autoSweepMine());
-              }}
-            >
-              半自动扫雷
-            </Button> */}
-
             <Button
               onClick={() => {
                 if (gameStatus === MineSweeperStatus.doing) {
@@ -141,7 +121,7 @@ export function MineSweeperGame() {
                 }
               }}
             >
-              {gameStatus === MineSweeperStatus.doing ? '继续' : '开始'}半自动扫雷
+              {gameStatus === MineSweeperStatus.doing ? 'Resume' : 'Start'} auto-sweep
             </Button>
           </div>
         </div>
