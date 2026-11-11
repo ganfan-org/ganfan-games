@@ -94,6 +94,38 @@
   }
 }
 
+.mini-tetris {
+  display: grid;
+  grid-template-columns: repeat(3, 14px);
+  grid-template-rows: repeat(3, 14px);
+  gap: 2px;
+  padding: 4px;
+  border-radius: 6px;
+  background: #17132e;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+
+  .tblock {
+    border-radius: 2px;
+    box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.35), inset -1px -1px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  .t-cyan {
+    background: #22d3ee;
+  }
+
+  .t-yellow {
+    background: #facc15;
+  }
+
+  .t-purple {
+    background: #a855f7;
+  }
+
+  .t-pink {
+    background: #ec4899;
+  }
+}
+
 .game-info {
   flex: 1;
   min-width: 0;

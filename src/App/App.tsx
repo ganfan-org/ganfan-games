@@ -9,6 +9,7 @@ import { Footer } from '../components/Footer/Footer';
 import { Header } from '../components/Header/Header';
 import { Home } from '../pages/Home/Home';
 import { MineSweeperGame } from '../pages/MineSweeper/MineSweeper';
+import { NotTetris2 } from '../pages/NotTetris2/NotTetris2';
 
 import { NewArticle } from '../pages/NewArticle/NewArticle';
 import { Register } from '../pages/Register/Register';
@@ -45,6 +46,9 @@ export function App() {
             </Route>
             <Route path='/mine-sweeper'>
               <MineSweeperGame />
+            </Route>
+            <Route path='/nottetris2'>
+              <NotTetris2 />
             </Route>
             <Route exact path='/'>
               <Home />

@@ -12,6 +12,13 @@ const games = [
     path: '/mine-sweeper',
     name: '扫雷',
     description: '经典 Windows 扫雷 · 16×30 · 99 颗雷',
+    icon: 'mine',
+  },
+  {
+    path: '/nottetris2',
+    name: 'Not Tetris 2',
+    description: '物理俄罗斯方块 · 真实堆叠 + 切割',
+    icon: 'tetris',
   },
 ];
 
@@ -31,6 +38,17 @@ function MiniBoard() {
   );
 }
 
+function MiniTetris() {
+  return (
+    <div className='mini-tetris'>
+      <span className='tblock t-cyan' style={{ gridArea: '1 / 1 / 3 / 2' }} />
+      <span className='tblock t-yellow' style={{ gridArea: '1 / 2 / 2 / 4' }} />
+      <span className='tblock t-purple' style={{ gridArea: '2 / 2 / 3 / 3' }} />
+      <span className='tblock t-pink' style={{ gridArea: '3 / 1 / 4 / 4' }} />
+    </div>
+  );
+}
+
 export function Home() {
   return (
     <Layout className='home-page' style={{ height: '100vh' }}>
@@ -41,11 +59,9 @@ export function Home() {
         <div className='home-container'>
           <div className='home-section-title'>全部游戏</div>
           <div className='game-grid'>
-            {games.map(({ path, name, description }) => (
+            {games.map(({ path, name, description, icon }) => (
               <Link key={path} to={path} className='game-card'>
-                <div className='game-icon'>
-                  <MiniBoard />
-                </div>
+                <div className='game-icon'>{icon === 'tetris' ? <MiniTetris /> : <MiniBoard />}</div>
                 <div className='game-info'>
                   <div className='game-name'>{name}</div>
                   <div className='game-desc'>{description}</div>
