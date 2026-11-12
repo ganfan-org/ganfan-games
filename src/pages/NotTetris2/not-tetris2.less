@@ -4,42 +4,69 @@
 
   h1.ant-typography {
     margin-bottom: 8px;
-    color: rgba(0, 0, 0, 0.88);
+    color: var(--app-text);
     font-size: 32px;
   }
 }
 
 .not-tetris-subtitle.ant-typography {
   margin-bottom: 0;
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--app-text-secondary);
   font-size: 18px;
 }
 
 .not-tetris-actions {
   margin-top: 24px;
+
+  .ant-btn {
+    color: var(--app-text);
+    background: var(--app-surface);
+    border-color: var(--app-border);
+    border-radius: 9999px;
+
+    &:hover,
+    &:focus {
+      color: var(--app-text);
+      background: var(--app-hover);
+      border-color: var(--app-accent);
+    }
+  }
+
+  .ant-btn-primary {
+    color: #fff;
+    background: var(--app-accent);
+    border-color: var(--app-accent);
+
+    &:hover,
+    &:focus {
+      color: #fff;
+      background: var(--app-accent-hover);
+      border-color: var(--app-accent-hover);
+    }
+  }
 }
 
 .not-tetris-card.ant-card {
   margin-bottom: 24px;
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+  box-shadow: var(--app-shadow);
 
   &:last-child {
     margin-bottom: 0;
   }
 
   .ant-card-head {
-    border-bottom-color: rgba(0, 0, 0, 0.06);
+    border-bottom-color: var(--app-border);
   }
 
   h4.ant-typography {
-    color: rgba(0, 0, 0, 0.88);
+    color: var(--app-text);
   }
 
   .ant-typography {
-    color: rgba(0, 0, 0, 0.65);
+    color: var(--app-text-secondary);
   }
 
   .ant-typography:last-child {
@@ -54,9 +81,15 @@
 .not-tetris-source-link.ant-btn {
   height: auto;
   padding: 0;
+  color: var(--app-accent);
   white-space: normal;
   overflow-wrap: anywhere;
   text-align: left;
+
+  &:hover,
+  &:focus {
+    color: var(--app-accent-hover);
+  }
 }
 
 @media (max-width: 600px) {
