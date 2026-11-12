@@ -1,0 +1,89 @@
+.not-tetris-hero {
+  margin-bottom: 32px;
+  text-align: center;
+}
+.not-tetris-hero h1.ant-typography {
+  margin-bottom: 8px;
+  color: var(--app-text);
+  font-size: 32px;
+}
+.not-tetris-subtitle.ant-typography {
+  margin-bottom: 0;
+  color: var(--app-text-secondary);
+  font-size: 18px;
+}
+.not-tetris-actions {
+  margin-top: 24px;
+}
+.not-tetris-actions .ant-btn {
+  color: var(--app-text);
+  background: var(--app-surface);
+  border-color: var(--app-border);
+  border-radius: 9999px;
+}
+.not-tetris-actions .ant-btn:hover,
+.not-tetris-actions .ant-btn:focus {
+  color: var(--app-text);
+  background: var(--app-hover);
+  border-color: var(--app-accent);
+}
+.not-tetris-actions .ant-btn-primary {
+  color: #fff;
+  background: var(--app-accent);
+  border-color: var(--app-accent);
+}
+.not-tetris-actions .ant-btn-primary:hover,
+.not-tetris-actions .ant-btn-primary:focus {
+  color: #fff;
+  background: var(--app-accent-hover);
+  border-color: var(--app-accent-hover);
+}
+.not-tetris-card.ant-card {
+  margin-bottom: 24px;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+  box-shadow: var(--app-shadow);
+}
+.not-tetris-card.ant-card:last-child {
+  margin-bottom: 0;
+}
+.not-tetris-card.ant-card .ant-card-head {
+  border-bottom-color: var(--app-border);
+}
+.not-tetris-card.ant-card h4.ant-typography {
+  color: var(--app-text);
+}
+.not-tetris-card.ant-card .ant-typography {
+  color: var(--app-text-secondary);
+}
+.not-tetris-card.ant-card .ant-typography:last-child {
+  margin-bottom: 0;
+}
+.not-tetris-features {
+  width: 100%;
+}
+.not-tetris-source-link.ant-btn {
+  height: auto;
+  padding: 0;
+  color: var(--app-accent);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+.not-tetris-source-link.ant-btn:hover,
+.not-tetris-source-link.ant-btn:focus {
+  color: var(--app-accent-hover);
+}
+@media (max-width: 600px) {
+  .not-tetris-hero {
+    margin-bottom: 24px;
+  }
+  .not-tetris-hero h1.ant-typography {
+    font-size: 28px;
+  }
+  .not-tetris-subtitle.ant-typography {
+    font-size: 16px;
+  }
+}
+

@@ -1,0 +1,127 @@
+.app-shell {
+  --app-header-background: #fafaf7;
+  --app-background: #f2f5f2;
+  --app-surface: #fff;
+  --app-text: #2d3b36;
+  --app-text-secondary: #6b7a73;
+  --app-text-tertiary: #8a9991;
+  --app-border: #d8ded8;
+  --app-brand: #f4a523;
+  --app-brand-light: #f4b040;
+  --app-accent: #b8731a;
+  --app-accent-hover: #8e5814;
+  --app-selected: rgba(184, 115, 26, 0.1);
+  --app-hover: rgba(0, 0, 0, 0.04);
+  --app-radius: 12px;
+  --app-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --app-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.08);
+  min-height: 100vh;
+  color: #2d3b36;
+  color: var(--app-text);
+  background: #f2f5f2;
+  background: var(--app-background);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+.app-shell .app-header {
+  display: flex;
+  align-items: center;
+  height: 64px;
+  padding: 0 20px;
+  line-height: normal;
+  background: var(--app-header-background);
+  border-bottom: 1px solid var(--app-border);
+}
+.app-shell .app-header-main {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.app-shell .app-brand {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 10px;
+  color: var(--app-text);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+.app-shell .app-brand:hover {
+  color: var(--app-accent);
+}
+.app-shell .app-brand-logo {
+  display: block;
+  width: 28px;
+  height: 28px;
+}
+.app-shell .app-header-divider {
+  border-left-color: var(--app-border);
+}
+.app-shell .app-page-title {
+  color: var(--app-text-secondary);
+  font-size: 14px;
+  white-space: nowrap;
+}
+.app-shell .app-site-nav {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 24px;
+  margin-left: auto;
+  padding-left: 24px;
+}
+.app-shell .app-nav-link {
+  color: var(--app-text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+.app-shell .app-nav-link:hover {
+  color: var(--app-accent-hover);
+}
+.app-shell .app-nav-link-active {
+  color: var(--app-accent);
+  font-weight: 600;
+}
+.app-shell .app-content {
+  flex: 1 1;
+  background: var(--app-background);
+}
+.app-shell .app-container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+.app-shell .app-container-wide {
+  max-width: 960px;
+}
+@media (max-width: 600px) {
+  .app-shell .app-header {
+    padding: 0 16px;
+  }
+  .app-shell .app-brand {
+    gap: 8px;
+    font-size: 15px;
+  }
+  .app-shell .app-header-divider,
+  .app-shell .app-page-title {
+    display: none;
+  }
+  .app-shell .app-site-nav {
+    gap: 12px;
+    padding-left: 12px;
+  }
+  .app-shell .app-nav-link {
+    font-size: 13px;
+  }
+  .app-shell .app-container {
+    padding: 24px 16px;
+  }
+}
+
