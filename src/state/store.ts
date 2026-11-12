@@ -7,7 +7,7 @@ const middlewareConfiguration = { serializableCheck: false };
 export const store = configureStore({
   reducer: { app, mineSweeper },
   devTools: {
-    name: 'GanFan.Games',
+    name: 'Ganfan Games',
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware(middlewareConfiguration),
 });

@@ -1,11 +1,8 @@
 import React from 'react';
-import { Layout, Typography } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import { AppShell } from '../../components/AppShell/AppShell';
 import './home.less';
-
-const { Header, Content } = Layout;
-const { Text } = Typography;
 
 const games = [
   {
@@ -51,29 +48,22 @@ function MiniTetris() {
 
 export function Home() {
   return (
-    <Layout className='home-page' style={{ height: '100vh' }}>
-      <Header className='home-header' style={{ display: 'flex', alignItems: 'center', padding: '0 20px' }}>
-        <Text className='brand'>GanFan.Game</Text>
-      </Header>
-      <Content className='home-content'>
-        <div className='home-container'>
-          <div className='home-section-title'>All Games</div>
-          <div className='game-grid'>
-            {games.map(({ path, name, description, icon }) => (
-              <Link key={path} to={path} className='game-card'>
-                <div className='game-icon'>{icon === 'tetris' ? <MiniTetris /> : <MiniBoard />}</div>
-                <div className='game-info'>
-                  <div className='game-name'>{name}</div>
-                  <div className='game-desc'>{description}</div>
-                </div>
-                <RightOutlined className='game-arrow' />
-              </Link>
-            ))}
-            <div className='game-card-coming'>More games coming soon</div>
-          </div>
-        </div>
-      </Content>
-    </Layout>
+    <AppShell>
+      <div className='home-section-title'>All Games</div>
+      <div className='game-grid'>
+        {games.map(({ path, name, description, icon }) => (
+          <Link key={path} to={path} className='game-card'>
+            <div className='game-icon'>{icon === 'tetris' ? <MiniTetris /> : <MiniBoard />}</div>
+            <div className='game-info'>
+              <div className='game-name'>{name}</div>
+              <div className='game-desc'>{description}</div>
+            </div>
+            <RightOutlined className='game-arrow' />
+          </Link>
+        ))}
+        <div className='game-card-coming'>More games coming soon</div>
+      </div>
+    </AppShell>
   );
 }
 

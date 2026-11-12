@@ -46,12 +46,7 @@ interface AroundItem {
   item: MineItem;
 }
 
-const getAroundItemsFromMatrix = (
-  mines: MineItem[][],
-  x: number,
-  y: number,
-  withSelf = false
-): AroundItem[] => {
+const getAroundItemsFromMatrix = (mines: MineItem[][], x: number, y: number, withSelf = false): AroundItem[] => {
   /**
    * Given the index we know the row and column
    * x = Math.floor(i /30)

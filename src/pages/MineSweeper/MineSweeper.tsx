@@ -5,9 +5,8 @@ import { MineItemStatus, MineSweeperStatus } from '../../types/mine-sweeper';
 import { initGame, autoSweepMine, autoSweepMineDoing } from './MineSweeper.slice';
 import { MineItemComponent } from './MineItem';
 import './mine-sweeper.less';
-import { Button, Layout, Typography, Divider } from 'antd';
-const { Header, Content } = Layout;
-const { Text } = Typography;
+import { Button } from 'antd';
+import { AppShell } from '../../components/AppShell/AppShell';
 
 export function MineSweeperGame() {
   const { mines_matrix, gameStatus, start_time, mines_actual } = useStoreWithInitializer(
@@ -40,93 +39,56 @@ export function MineSweeperGame() {
   flagText = `Flags/Mines: ${flagCount}/99`;
 
   return (
-    <Layout
-      style={{
-        height: '100vh',
-        color: 'rgba(190, 190, 190, 1.00)',
-      }}
-    >
-      <Header
-        style={{
-          padding: '0 20px',
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-        <Text
-          style={{
-            color: 'rgba(255, 255, 255, 0.92)',
-            fontSize: '16px',
-            fontWeight: 600,
-          }}
-        >
-          GanFan.Game
-        </Text>
-        <Divider type='vertical' />
-        <Text
-          style={{
-            color: 'rgba(255, 255, 255, 0.75)',
-            fontSize: '14px',
-          }}
-        >
-          Minesweeper
-        </Text>
-      </Header>
-      <Content className='page-content'>
-        <div className='game-container'>
-          <div className='mine-sweeper-controller-wrapper wrapper'>
-            <div className='mine-sweeper-controller'>
-              <div>{flagText}</div>
-              <div className='start-btn'>
-                <button
-                  type='button'
-                  style={{
-                    backgroundColor: 'transparent',
-                    border: 'none',
-                    lineHeight: '1',
-                  }}
-                  // shape='circle'
-                  // size='large'
-                  onClick={() => {
-                    store.dispatch(initGame());
-                  }}
-                >
-                  <span style={{ fontSize: '30px' }}>{btnText}</span>
-                </button>
+    <AppShell title='Minesweeper' wide>
+      <div className='mine-sweeper-game'>
+        <div className='mine-sweeper-scroll'>
+          <div className='mine-sweeper-content'>
+            <div className='mine-sweeper-controller-wrapper wrapper'>
+              <div className='mine-sweeper-controller'>
+                <div>{flagText}</div>
+                <div className='start-btn'>
+                  <button
+                    type='button'
+                    onClick={() => {
+                      store.dispatch(initGame());
+                    }}
+                  >
+                    <span>{btnText}</span>
+                  </button>
+                </div>
+                <div>{timeText}</div>
               </div>
-
-              <div>{timeText}</div>
             </div>
-          </div>
-          <div className='mine-sweeper-body-wrapper wrapper' style={{ marginTop: '20px' }}>
-            <div className='mine-sweeper-body'>
-              {mines_matrix.map((row, x) => {
-                return (
-                  <div key={row[0].id} className='row' style={{ display: 'flex' }}>
-                    {row.map((item, y) => {
-                      return <MineItemComponent key={item.id} mine={item} x={x} y={y} />;
-                    })}
-                  </div>
-                );
-              })}
+            <div className='mine-sweeper-body-wrapper wrapper'>
+              <div className='mine-sweeper-body'>
+                {mines_matrix.map((row, x) => {
+                  return (
+                    <div key={row[0].id} className='row' style={{ display: 'flex' }}>
+                      {row.map((item, y) => {
+                        return <MineItemComponent key={item.id} mine={item} x={x} y={y} />;
+                      })}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-          <div>
-            <Button
-              onClick={() => {
-                if (gameStatus === MineSweeperStatus.doing) {
-                  store.dispatch(autoSweepMineDoing());
-                } else {
-                  store.dispatch(autoSweepMine());
-                }
-              }}
-            >
-              {gameStatus === MineSweeperStatus.doing ? 'Resume' : 'Start'} auto-sweep
-            </Button>
           </div>
         </div>
-      </Content>
-    </Layout>
+        <div className='mine-sweeper-actions'>
+          <Button
+            onClick={() => {
+              if (gameStatus === MineSweeperStatus.doing) {
+                store.dispatch(autoSweepMineDoing());
+              } else {
+                store.dispatch(autoSweepMine());
+              }
+            }}
+          >
+            {gameStatus === MineSweeperStatus.doing ? 'Resume' : 'Start'} auto-sweep
+          </Button>
+        </div>
+      </div>
+    </AppShell>
   );
 }
 
