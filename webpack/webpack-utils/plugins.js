@@ -13,6 +13,7 @@ const { PUBLIC_PATH, DIST_PATH, ENV_CONFIG_PATH, IS_DEV, SRC_PATH } = variable;
 function getHTMLPlugins() {
   const indexHtmlPlugin = new HtmlWebpackPlugin({
     template: path.join(PUBLIC_PATH, 'index.html'),
+    favicon: path.join(PUBLIC_PATH, 'favicon.ico'),
     // filename: path.join(DIST_PATH, 'index.html'),
     filename: 'index.html',
     inject: true, //true 插入body底部，head:插入head标签，false:不生成js文件
@@ -27,6 +28,7 @@ function getHTMLPlugins() {
   });
   const index404HtmlPlugin = new HtmlWebpackPlugin({
     template: path.join(PUBLIC_PATH, 'index.html'),
+    favicon: path.join(PUBLIC_PATH, 'favicon.ico'),
     // filename: path.join(DIST_PATH, 'index.html'),
     filename: '404.html',
     inject: true, //true 插入body底部，head:插入head标签，false:不生成js文件
